@@ -228,6 +228,16 @@ function App() {
     const myPlayer = gameState.players[myRole];
     const canAct = myPlayer?.canAct;
 
+    // 调试信息（开发时使用）
+    console.log('=== 游戏状态调试 ===');
+    console.log('我的角色 myRole:', myRole);
+    console.log('当前回合 currentTurn:', gameState.currentTurn);
+    console.log('是否我的回合 isMyTurn:', isMyTurn);
+    console.log('我的玩家数据 myPlayer:', myPlayer);
+    console.log('是否可行动 canAct:', canAct);
+    console.log('所有玩家:', gameState.players);
+    console.log('==================');
+
     return (
       <div className="game-container">
         {/* 左侧面板 */}

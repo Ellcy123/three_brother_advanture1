@@ -81,7 +81,17 @@ class GameRoom {
     if (playerCount < 1) return false;
     
     this.gameState.phase = 'game';
-    this.gameState.currentTurn = 0;
+    
+    // 找到第一个可以行动的玩家
+    let firstActiveIndex = 0;
+    for (let i = 0; i < this.playerOrder.length; i++) {
+      const role = this.playerOrder[i];
+      if (this.gameState.unlockedPlayers.includes(role)) {
+        firstActiveIndex = i;
+        break;
+      }
+    }
+    this.gameState.currentTurn = firstActiveIndex;
     
     // 单人模式提示
     if (playerCount === 1) {
@@ -89,7 +99,12 @@ class GameRoom {
     }
     
     this.addMessage('系统', '游戏开始！你们醒来后发现被困在一个密室中。你好像听到了有人在哭泣，密室的布局很奇怪，有一汪水潭，一个行李箱，一个衣柜。');
-    this.addMessage('系统', `当前回合：${this.getCurrentPlayer().name}`);
+    
+    const currentPlayer = this.getCurrentPlayer();
+    if (currentPlayer) {
+      this.addMessage('系统', `当前回合：${currentPlayer.name}`);
+    }
+    
     return true;
   }
 
@@ -327,9 +342,12 @@ class GameRoom {
       };
     }
 
+    // 安全获取当前回合的玩家角色
+    const currentTurnRole = this.playerOrder[this.gameState.currentTurn] || this.playerOrder[0] || 'player1';
+
     return {
       phase: this.gameState.phase,
-      currentTurn: this.playerOrder[this.gameState.currentTurn],
+      currentTurn: currentTurnRole,
       items: this.gameState.items,
       letters: this.gameState.letters,
       brokenItems: this.gameState.brokenItems,
