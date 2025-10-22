@@ -77,9 +77,17 @@ class GameRoom {
   }
 
   startGame() {
-    if (Object.keys(this.players).length < 3) return false;
+    const playerCount = Object.keys(this.players).length;
+    if (playerCount < 1) return false;
+    
     this.gameState.phase = 'game';
     this.gameState.currentTurn = 0;
+    
+    // 单人模式提示
+    if (playerCount === 1) {
+      this.addMessage('系统', '🧪 测试模式：单人游戏开始！你扮演乌龟角色。');
+    }
+    
     this.addMessage('系统', '游戏开始！你们醒来后发现被困在一个密室中。你好像听到了有人在哭泣，密室的布局很奇怪，有一汪水潭，一个行李箱，一个衣柜。');
     this.addMessage('系统', `当前回合：${this.getCurrentPlayer().name}`);
     return true;
@@ -178,14 +186,13 @@ class GameRoom {
     const player = this.players[playerRole];
     const keys = [];
     
-    // 分割关键词
-    const parts = keyword.split('+').map(p => p.trim());
+    // 分割关键词 - 使用let以便后续修改
+    let parts = keyword.split('+').map(p => p.trim());
     if (parts.length !== 2) {
       // 尝试其他分隔符
       const otherParts = keyword.split(/[+、，,]/).map(p => p.trim());
       if (otherParts.length === 2) {
-        parts[0] = otherParts[0];
-        parts[1] = otherParts[1];
+        parts = otherParts;
       }
     }
 

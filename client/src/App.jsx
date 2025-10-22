@@ -199,14 +199,22 @@ function App() {
           ))}
         </div>
 
-        {playerCount === 3 && (
-          <button onClick={handleStartGame} className="btn btn-primary btn-large">
-            开始游戏
-          </button>
+        {playerCount >= 1 && (
+          <div>
+            <button onClick={handleStartGame} className="btn btn-primary btn-large">
+              开始游戏 {playerCount === 1 && '(测试模式)'}
+            </button>
+            {playerCount === 1 && (
+              <p className="test-mode-tip">🧪 单人测试模式：你将扮演乌龟角色</p>
+            )}
+            {playerCount === 2 && (
+              <p className="waiting-text">已有2名玩家，可以开始游戏或等待第3名玩家</p>
+            )}
+          </div>
         )}
 
-        {playerCount < 3 && (
-          <p className="waiting-text">等待其他玩家加入... ({playerCount}/3)</p>
+        {playerCount === 0 && (
+          <p className="waiting-text">等待玩家加入...</p>
         )}
       </div>
     );

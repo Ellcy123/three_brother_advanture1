@@ -240,6 +240,17 @@
   margin-top: 20px;
 }
 
+.test-mode-tip {
+  color: #667eea;
+  font-size: 0.95em;
+  margin-top: 10px;
+  font-weight: 500;
+  background: #f0f4ff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #667eea;
+}
+
 /* 游戏界面样式 */
 .game-container {
   display: grid;
