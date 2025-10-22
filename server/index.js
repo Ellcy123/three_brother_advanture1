@@ -90,8 +90,28 @@ class GameRoom {
     return this.players[currentRole];
   }
 
+  // 获取下一个可以行动的玩家
+  getNextActivePlayerIndex() {
+    const startIndex = this.gameState.currentTurn;
+    let nextIndex = (startIndex + 1) % this.playerOrder.length;
+    let attempts = 0;
+    
+    // 最多尝试3次（3个玩家），找到可以行动的玩家
+    while (attempts < this.playerOrder.length) {
+      const role = this.playerOrder[nextIndex];
+      if (this.gameState.unlockedPlayers.includes(role)) {
+        return nextIndex;
+      }
+      nextIndex = (nextIndex + 1) % this.playerOrder.length;
+      attempts++;
+    }
+    
+    // 如果没有玩家可以行动，返回当前索引
+    return startIndex;
+  }
+
   nextTurn() {
-    this.gameState.currentTurn = (this.gameState.currentTurn + 1) % this.playerOrder.length;
+    this.gameState.currentTurn = this.getNextActivePlayerIndex();
     const currentPlayer = this.getCurrentPlayer();
     this.addMessage('系统', `当前回合：${currentPlayer.name}`);
   }
